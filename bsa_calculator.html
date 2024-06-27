@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title>体表面积计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>体表面积计算器</h2>
+        <form id="bsaForm">
+            <label for="height">身高 (cm):</label>
+            <input type="number" id="height" name="height" required><br>
+            <label for="weight">体重 (kg):</label>
+            <input type="number" id="weight" name="weight" required><br>
+            <button type="submit">体表面积</button>
+        </form>
+        <div class="result" id="result">
+            <!-- BSA calculation result will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for BSA calculation
+        document.getElementById('bsaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            calculateBSA();
+        });
+
+        function calculateBSA() {
+            var height = parseFloat(document.getElementById('height').value);
+            var weight = parseFloat(document.getElementById('weight').value);
+
+            if (height > 0 && weight > 0) {
+                // Mosteller formula for BSA
+                var bsa = Math.sqrt((height * weight) / 3600);
+                var bsaResult = "体表面积是 " + bsa.toFixed(2) + " m².";
+
+                document.getElementById('result').innerHTML = bsaResult;
+            } else {
+                alert("请输入确切的身高体重数字");
+            }
+        }
+    </script>
+</body>
+</html>
