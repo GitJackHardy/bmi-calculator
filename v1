@@ -8,6 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            background-color: #f9f9f9;
         }
         .container {
             max-width: 400px;
@@ -15,15 +16,23 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: #f9f9f9;
+            background-color: #fff;
         }
         input[type="number"] {
+            -moz-appearance: textfield;
+            -webkit-appearance: none;
+            appearance: none;
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 3px;
             box-sizing: border-box;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         button {
             padding: 10px 20px;
@@ -32,6 +41,9 @@
             border: none;
             border-radius: 3px;
             cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
         .result {
             margin-top: 20px;
@@ -50,7 +62,7 @@
             <input type="number" id="height" name="height" required><br>
             <label for="weight">体重 (kg):</label>
             <input type="number" id="weight" name="weight" required><br>
-            <button type="submit">计算我的 BMI</button>
+            <button type="submit">体重指数</button>
         </form>
         <div class="result" id="result">
             <!-- BMI calculation result will be displayed here -->
@@ -58,7 +70,7 @@
     </div>
 
     <script>
-        // JavaScript for BMI calculation
+        // JavaScript for BMI calculation using WHO standards
         document.getElementById('bmiForm').addEventListener('submit', function(event) {
             event.preventDefault();
             calculateBMI();
@@ -70,21 +82,26 @@
 
             if (height > 0 && weight > 0) {
                 var bmi = weight / ((height / 100) * (height / 100));
-                var bmiResult = "你的 BMI 是: " + bmi.toFixed(1) + "<br>";
-                
+                var bmiResult = "您的体重指数（BMI）为 " + bmi.toFixed(1) + "。" + "<br>";
+                var suggestion = "";
+
                 if (bmi < 18.5) {
-                    bmiResult += "不足18.5，太瘦了，这样并不健康，建议补充营养，提高到18.5以上。";
+                    suggestion = "不足18.5，太瘦了，建议增加营养。";
                 } else if (bmi >= 18.5 && bmi < 24.9) {
-                    bmiResult += "介于18.5到25之间，非常完美，请继续保持。";
+                    suggestion = "介于18.5和25之间，完美，请继续保持。";
                 } else if (bmi >= 24.9 && bmi < 29.9) {
-                    bmiResult += "介于25到30之间，已经超重了，建议改变饮食结构，增加运动量，争取降到25以下。";
+                    suggestion = "介于25和30之间，已经超重了，需警惕，建议改变饮食结构，增加运动量。";
                 } else {
-                    bmiResult += "超过了30，已经达到肥胖标准，肥胖会带来很多不良并发症，请减少摄入，增加运动量，必要时需要就医咨询。";
+                    suggestion = "超过30，体重过大，已达肥胖标准，健康问题风险明显增加，建议控制饮食总量，增加运动消耗，必要时需就医咨询。";
                 }
 
-                document.getElementById('result').innerHTML = bmiResult;
+                var idealWeightMin = 18.5 * ((height / 100) * (height / 100));
+                var idealWeightMax = 24.9 * ((height / 100) * (height / 100));
+                var idealWeightRange = "根据您的身高，理想体重的范围应该是 " + idealWeightMin.toFixed(1) + "kg - " + idealWeightMax.toFixed(1) + "kg.";
+
+                document.getElementById('result').innerHTML = bmiResult + suggestion + "<br>" + idealWeightRange;
             } else {
-              alert("请输入准确的身高和体重");
+                alert("请输入正确的身高和体重");
             }
         }
     </script>
